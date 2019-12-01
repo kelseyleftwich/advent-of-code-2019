@@ -1,5 +1,6 @@
 defmodule Advent.Day1Test do
   use ExUnit.Case
+  doctest Advent.Day1
 
   describe "Day 1: Fuel Counter Upper" do
     test "calculate_fuel/1 Integer" do
