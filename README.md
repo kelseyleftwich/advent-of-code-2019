@@ -1,21 +1,25 @@
-# Advent
+# Advent of Code 2019
 
-**TODO: Add description**
+🎄 My solutions for Advent of Code 2019 🎄
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:advent, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/advent](https://hexdocs.pm/advent).
-
+<pre>
+           _
+          {_}
+          / \
+         /   \
+        /_____\
+      {`_______`}
+       // . . \\
+      (/(__7__)\)
+      |'-' = `-'|
+      |         |
+      /\       /\
+     /  '.   .'  \
+    /_/   `"`   \_\
+   {__}###[_]###{__}
+   (_/\_________/\_) ⭐️⭐️
+       |___|___|
+        |--|--|
+       (__)`(__)
+</pre>
+[source](https://asciiart.website//index.php?art=holiday/christmas/santa)
