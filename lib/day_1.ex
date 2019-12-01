@@ -15,13 +15,15 @@ defmodule Advent.Day1 do
     4
 
     iex> Advent.Day1.calculate_fuel([12, 14, 1969, 100756])
-    34241
+    51316
   """
   def calculate_fuel(masses) when is_list(masses) do
     Enum.reduce(masses, 0, fn mass, acc ->
       acc + calculate_fuel(mass)
     end)
   end
+
+  def calculate_fuel(mass) when is_integer(mass) and mass <= 0, do: 0
 
   @doc """
   Calculates fuel required for mass
@@ -33,14 +35,39 @@ defmodule Advent.Day1 do
   """
   @spec calculate_fuel(integer) :: integer
   def calculate_fuel(mass) do
-    mass
-    |> div(3)
-    |> floor()
-    |> subtract(2)
+    fuel =
+      mass
+      |> div(3)
+      |> floor()
+      |> subtract(2)
+      |> round_up_if_negative()
+
+    fuel + calculate_fuel(fuel)
   end
 
   defp subtract(a, b) do
     a - b
+  end
+
+  @doc """
+  Return 0 if fuel amount passed in is not greater than 0, otherwise return fuel amount
+
+  ## Examples
+
+    iex> Advent.Day1.round_up_if_negative(12)
+    12
+
+    iex> Advent.Day1.round_up_if_negative(0)
+    0
+
+    iex> Advent.Day1.round_up_if_negative(-5)
+    0
+  """
+  def round_up_if_negative(fuel) do
+    case fuel > 0 do
+      true -> fuel
+      false -> 0
+    end
   end
 
   @doc """
