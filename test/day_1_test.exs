@@ -10,7 +10,7 @@ defmodule Advent.Day1Test do
 
       assert 966 = Advent.Day1.calculate_fuel(1969)
 
-      assert 50346 = Advent.Day1.calculate_fuel(100756)
+      assert 50346 = Advent.Day1.calculate_fuel(100_756)
     end
 
     test "calculate_fuel/1 with zero and negative input" do
@@ -20,11 +20,9 @@ defmodule Advent.Day1Test do
     end
 
     test "calculate_fuel/1 list" do
-      masses = [12, 14, 1969, 100756]
+      masses = [12, 14, 1969, 100_756]
 
       assert 51316 = Advent.Day1.calculate_fuel(masses)
     end
-
-
   end
 end
