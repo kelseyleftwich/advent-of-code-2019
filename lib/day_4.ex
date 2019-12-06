@@ -20,22 +20,22 @@ defmodule Advent.Day4 do
     0
   end
 
-  def sum_list([h|t]) do
+  def sum_list([h | t]) do
     h + sum_list(t)
   end
 
   def adjacent_digits_count_is_two(password) do
     password
     |> get_digits()
-    |> Enum.group_by(&(&1), fn _ -> 1 end)
+    |> Enum.group_by(& &1, fn _ -> 1 end)
     |> Enum.reduce(false, fn {_digit, counts}, acc ->
       with false <- acc,
-        false <- sum_list(counts) == 2 do
-          false
-        else
-          true ->
-            true
-        end
+           false <- sum_list(counts) == 2 do
+        false
+      else
+        true ->
+          true
+      end
     end)
   end
 
@@ -45,7 +45,7 @@ defmodule Advent.Day4 do
       |> get_digits()
       |> Enum.reduce({nil, true}, fn digit, {prev, valid} ->
         with true <- valid,
-            true <- digit >= prev do
+             true <- digit >= prev do
           {digit, true}
         else
           false ->
@@ -61,14 +61,16 @@ defmodule Advent.Day4 do
   end
 
   def password_is_valid(password) do
-    has_adjacent_digits(password) and digits_never_decrease(password) and adjacent_digits_count_is_two(password)
+    has_adjacent_digits(password) and digits_never_decrease(password) and
+      adjacent_digits_count_is_two(password)
   end
 
   def valid_passwords_in_range() do
-    Enum.reduce(134792..675810, 0, fn password, acc ->
+    Enum.reduce(134_792..675_810, 0, fn password, acc ->
       case password_is_valid("#{password}") do
         true ->
           acc + 1
+
         false ->
           acc
       end
