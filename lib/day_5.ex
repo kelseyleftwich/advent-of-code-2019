@@ -27,7 +27,6 @@ defmodule Advent.Day5 do
     {before_pos, [_discard | after_pos]} = Enum.split(program, parameter)
 
     program = before_pos ++ [value] ++ after_pos
-
     move_pointer_and_run_program(program, tail)
   end
 
@@ -37,37 +36,13 @@ defmodule Advent.Day5 do
       ) do
     value = Enum.at(program, parameter)
     output_to_term("Output: #{value}")
-
     move_pointer_and_run_program(program, tail)
-  end
-
-  def run_program(program, [pos_0 | [pos_1 | [pos_2 | [pos_4 | tail]]]] = remaining_program)
-      when length(remaining_program) > 4 and (pos_0 == 1 or pos_0 == 2) do
-    pos_1_value = Enum.at(program, pos_1)
-    pos_2_value = Enum.at(program, pos_2)
-
-    {before_pos, [_discard | after_pos]} = Enum.split(program, pos_4)
-
-    program = before_pos ++ [process_ints(pos_0, pos_1_value, pos_2_value)] ++ after_pos
-
-    remaining_program = Enum.take(program, length(tail) * -1)
-
-    run_program(program, remaining_program)
-  end
-
-  def process_ints(1, a, b) do
-    a + b
-  end
-
-  def process_ints(2, a, b) do
-    a * b
   end
 
   def run_program(
         program,
         [instruction | tail]
       ) do
-    IO.inspect("#{instruction} : #{length(program) - length(tail)}")
 
     op_code = rem(instruction, 100)
 
@@ -79,7 +54,7 @@ defmodule Advent.Day5 do
         4 ->
           instruction_digits
         _ ->
-          case op_code == 1 or op_code == 2 do
+          case op_code == 1 or op_code == 2 or op_code == 6 or op_code ==5 or op_code == 7 or op_code == 8 do
             true ->
             leading_zeros =
               List.duplicate(0, 4 - length(instruction_digits))
@@ -90,7 +65,6 @@ defmodule Advent.Day5 do
             end
       end
 
-
     values =
       instruction_digits
       |> Enum.reverse()
@@ -100,26 +74,46 @@ defmodule Advent.Day5 do
         get_value(mode, Enum.at(tail, index), program)
       end)
 
-      case process_values(op_code, values) do
-        nil ->
-          {_head, tail} = Enum.split(tail, length(values))
-          move_pointer_and_run_program(program, tail)
-        result ->
-          insert_pos_digit_index =
-            instruction_digits
-            |> length
-            |> Kernel.-(2)
+      case op_code do
+        5 ->
+          case Enum.at(values,0) do
+            0 ->
+              [_v1 | [_v2 | tail ]] = tail
+              move_pointer_and_run_program(program, tail)
+            _ ->
+              {_before_pos, tail} = Enum.split(program, Enum.at(values, 1))
+              move_pointer_and_run_program(program, tail)
+          end
+        6 ->
+          case Enum.at(values,0) do
+            0 ->
+              {_before_pos, tail} = Enum.split(program, Enum.at(values,1))
+              move_pointer_and_run_program(program, tail)
+            _ ->
+              [_v1 | [_v2 | tail ]] = tail
+              move_pointer_and_run_program(program, tail)
+          end
+        _ ->
+          case process_values(op_code, values) do
+            nil ->
+              {_head, tail} = Enum.split(tail, length(values))
+              move_pointer_and_run_program(program, tail)
+            result ->
+              insert_pos_digit_index =
+                instruction_digits
+                |> length
+                |> Kernel.-(2)
 
-          insert_pos = Enum.at(tail, insert_pos_digit_index)
+              insert_pos = Enum.at(tail, insert_pos_digit_index)
 
-          {before_pos, [_discard | after_pos]} = Enum.split(program, insert_pos)
+              {before_pos, [_discard | after_pos]} = Enum.split(program, insert_pos)
 
-          program = before_pos ++ [result] ++ after_pos
+              program = before_pos ++ [result] ++ after_pos
 
-          {_head, tail} = Enum.split(tail, length(values) + 1)
-          move_pointer_and_run_program(program, tail)
+              {_head, tail} = Enum.split(tail, length(values) + 1)
+              move_pointer_and_run_program(program, tail)
+          end
       end
-
 
   end
 
@@ -149,6 +143,24 @@ defmodule Advent.Day5 do
   def process_values(4, [value]) do
     output_to_term("Output: #{value}")
     nil
+  end
+
+  def process_values(8 = _op_code, [value_1, value_2]) do
+    case value_1 == value_2 do
+      true ->
+        1
+      false ->
+        0
+    end
+  end
+
+  def process_values(7 = _op_code, [value_1, value_2]) do
+    case value_1 < value_2 do
+      true ->
+        1
+      false ->
+        0
+    end
   end
 
   def output_to_term(arg) do
